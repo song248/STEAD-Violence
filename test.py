@@ -59,7 +59,6 @@ def test(dataloader, model, args, device = 'cuda', name = "training", main = Fal
         
         return roc_auc, pr_auc
 
-
 if __name__ == '__main__':
     args = option.parse_args()
     device = torch.device("cuda")   

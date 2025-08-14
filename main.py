@@ -48,13 +48,29 @@ if __name__ == '__main__':
     np.random.seed(2025)
     torch.cuda.manual_seed(2025)
     device = torch.device('cuda')
-
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if device.type == 'cuda':
+        torch.cuda.manual_seed(2025)
+    else:
+        torch.manual_seed(2025)
 
     # DO NOT SHUFFLE, shuffling is handled by the Dataset class and not the DataLoader
-    train_loader = DataLoader(Dataset(args, test_mode=False),
-                               batch_size=args.batch_size // 2)
-    test_loader = DataLoader(Dataset(args, test_mode=True),
-                             batch_size=args.batch_size)
+    # train_loader = DataLoader(Dataset(args, test_mode=False),
+    #                            batch_size=args.batch_size // 2)
+    train_loader = DataLoader(
+            Dataset(args, test_mode=False),
+            batch_size=args.batch_size // 2,
+            shuffle=False,  # 중요: Dataset이 내부에서 페어링/셔플 관리
+            pin_memory=(device.type == 'cuda')
+        )
+    # test_loader = DataLoader(Dataset(args, test_mode=True),
+    #                          batch_size=args.batch_size)
+    test_loader = DataLoader(
+            Dataset(args, test_mode=True),
+            batch_size=args.batch_size,
+            shuffle=False,
+            pin_memory=(device.type == 'cuda')
+        )
 
     if args.model_arch == 'base':
         model = Model(dropout = args.dropout_rate, attn_dropout=args.attn_dropout_rate)
