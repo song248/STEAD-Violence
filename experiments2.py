@@ -18,7 +18,7 @@ import cv2  # fps, total frames meta
 # 사용자 옵션 (argparse 미사용)
 # =========================
 VIDEO_DIR = "hf-violence/video"
-CKPT_PATH = "saved_models/888tiny.pkl"
+CKPT_PATH = "saved_models/GJ_finetune.pkl"
 CLIP_DURATION_SEC = 2
 FRAMES_PER_CLIP   = 8      # 비교 실험 시 8/16 등 자유롭게 변경
 STRIDE_SEC        = 1     # 겹침 유지
@@ -27,7 +27,7 @@ THRESHOLD         = 0.5
 USE_AMP           = False   # 재현성 우선(속도 필요하면 True로 바꾸세요)
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-OUT_ROOT = f"hf-violence/predict-{CLIP_DURATION_SEC}sec-{FRAMES_PER_CLIP}fps-{STRIDE_SEC}"
+OUT_ROOT = f"hf-violence/predict(FT)-{CLIP_DURATION_SEC}sec-{FRAMES_PER_CLIP}fps-{STRIDE_SEC}"
 os.makedirs(OUT_ROOT, exist_ok=True)
 
 torch.backends.cudnn.benchmark = True  # 고정 해상도 가정 시 커널 튜닝
